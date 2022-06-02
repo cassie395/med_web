@@ -1,9 +1,9 @@
 <template>
   <v-container fluid class="info-page">
-    <h2 class="page-title mt-10 mb-6">您好! 護理師</h2>
+    <h2 class="page-title mt-10 mb-6" >您好! {{userName}} 護理師</h2>
     <v-row>
       <v-col lg=12 cols=12>
-        <v-card class="mx-1 mb-1">
+        <v-card class="mx-1 mb-1" color="rgb(224, 224, 224, 0.2)">
           <v-card-title class="pa-6 pb-3">
             <p>每日點班</p>
           </v-card-title>
@@ -14,7 +14,12 @@
                 <p class="text-body-1">點班情況: </p>
                 <p class="text-body-1">點班時間: </p>
               </v-col>
-              <v-btn elevation="2" v-on="on" color="secondary" class="text-capitalize button-shadow mr-1">
+              <v-btn 
+              elevation="2"
+              v-on="on"
+              color="secondary"
+              class="text-capitalize button-shadow mr-1"
+              @click.native="$router.push('/info/detect')">
                 開始點班
               </v-btn>
             </v-row>
@@ -24,3 +29,13 @@
     </v-row>
   </v-container>
 </template>
+
+<script>
+  export default {
+    data () {
+      return {
+        userName: 'user',
+      }
+    },
+  }
+</script>

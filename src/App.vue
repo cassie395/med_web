@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="App">
 
     <v-navigation-drawer
       v-model="drawer"
@@ -15,7 +15,18 @@
           size="64"
         ></v-avatar>
 
-        <div>test</div>
+        <div id="app">
+          user
+          {{userName}}
+        </div>
+        <!-- <br>
+          <a href="" @click.prevent="logout">
+            <v-btn 
+                type="submit"
+                color="secondary">
+                Log Out
+            </v-btn>
+          </a> -->
       </v-sheet>
 
       <v-divider></v-divider>
@@ -41,7 +52,7 @@
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>點班系統</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
@@ -61,7 +72,7 @@
     data: () => ({
       drawer: null,
       links: [
-        ['mdi-home', '主頁', '/'],
+        ['mdi-home', '主頁', '/home'],
         ['mdi-pill', '急救車點班', '/info'],
         ['mdi-account', '個人點班記錄', '/account'],
         ['mdi-list-status', '急救車點班情況', '/list'],

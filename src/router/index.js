@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
 import InfoView from '../views/InfoView.vue'
 import ListView from '../views/ListView.vue'
@@ -9,15 +10,22 @@ import CheckAllView from '../views/CheckAllView'
 import CheckMView from '../views/CheckMView'
 import TableView from '../views/TableView'
 import ResultView from '../views/ResultView'
+import DetcView from '../views/DetcView'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
+    //name: 'login',
+    component: LoginView
+  },
+  {
+    path: '/home',
     name: 'home',
     component: HomeView
   },
+  
   {
     path: '/info',
     name: 'info',
@@ -57,6 +65,11 @@ const routes = [
     path: '/result',
     name: 'result',
     component: ResultView
+  },
+  {
+    path: '/info/detect',
+    name: 'detect',
+    component: DetcView
   },
 ]
 
