@@ -11,6 +11,7 @@ import CheckMView from '../views/CheckMView'
 import TableView from '../views/TableView'
 import ResultView from '../views/ResultView'
 import DetcView from '../views/DetcView'
+import LayerView from '../views/LayerView'
 
 Vue.use(VueRouter)
 
@@ -70,6 +71,11 @@ const routes = [
     path: '/info/detect',
     name: 'detect',
     component: DetcView
+  },
+  {
+    path: '/layer',
+    name: 'layer',
+    component: LayerView
   },
 ]
 

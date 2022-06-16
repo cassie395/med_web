@@ -1,6 +1,12 @@
 <template>
   <div id="detect">
-    <v-img :src="url"></v-img>
+    <v-img 
+      :src="url"
+      max-height = "554"
+      max-width = "739"
+      contain
+    ></v-img>
+
     <v-file-input
       accept="image/jpg"
       placeholder="請選擇檔案"
@@ -8,12 +14,14 @@
       @change="previewImage"
       v-model="image"
     ></v-file-input>
-
-    <v-btn 
-      color="secondary"
-      @click="upload">
-        上傳
-    </v-btn>
+    <v-row align="center" justify="center">
+      <v-btn
+        class="ma-5"
+        color="secondary"
+        @click="upload">
+          上傳
+      </v-btn>
+    </v-row>
   </div>
 </template>
 
@@ -24,7 +32,8 @@
     data () {
       return {
         url: null,
-        image: null
+        image: null,
+        num: null,
       }
     },
     methods: {
@@ -36,14 +45,25 @@
         const formData = new FormData();
         formData.append('image', that.image)
 
-        const path = 'http://127.0.0.1:5000/detectObject';
+        const path = 'http://192.168.43.34:5000/detectObject';
 
         axios.post(path,formData)
         .then(function(resp){
           var msg = resp.data.status;
-          that.serverResponse = msg;
 
-          alert('success')
+          //alert('success'+msg)
+          
+          that.num = msg.toString();
+          that.num = that.num.substring(1, (that.num.length-1));
+
+          that.$router.push({
+            path: "/layer",
+            name: 'layer',
+            query:{
+              num : that.num
+            }
+          })
+
         }).catch(function(error){
           alert('Error '+error)
         })

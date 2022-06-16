@@ -1,6 +1,5 @@
 <template>
   <v-container fluid class="info-page">
-    <h2 class="page-title mt-10 mb-6" >您好! {{userName}} 護理師</h2>
     <v-row>
       <v-col lg=12 cols=12>
         <v-card class="mx-1 mb-1" color="rgb(224, 224, 224, 0.2)">
@@ -12,7 +11,10 @@
               <v-col cols="12" class="card-dark-grey">
                 <p class="text-body-1">負責區域: </p>
                 <p class="text-body-1">點班情況: </p>
-                <p class="text-body-1">點班時間: </p>
+                <p class="text-body-1">點班日期: {{date}}</p>
+                <p class="text-body-1">點班時間: {{time}}</p>
+
+    
               </v-col>
               <v-btn 
               elevation="2"
@@ -32,10 +34,9 @@
 
 <script>
   export default {
-    data () {
-      return {
-        userName: 'user',
-      }
-    },
+    data: () => ({
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      time: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(11, 11).split(".")[0],
+    }),
   }
 </script>
