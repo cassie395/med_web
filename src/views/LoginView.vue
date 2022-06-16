@@ -15,22 +15,30 @@
               <v-text-field
                 label="請輸入帳號"
                 type="text"
-                v-model="userName"
+                v-model="user.uid"
               ></v-text-field>
               
               <label>Password : </label>
               <v-text-field
                 label="請輸入密碼"
                 type="password"
-                v-model="password"
+                v-model="user.password"
               ></v-text-field>
               <br>
               <v-btn 
-                type="submit"
+                type="primary"
                 color="secondary">
                   Log In
               </v-btn>
             </form>
+              <!-- <v-btn 
+                type="submit"
+                color="secondary"
+                style="float:right"
+                @click.prevent="signup">
+                  Sign Up
+              </v-btn> -->
+              <!-- <b-dropdown-item><router-link to="/register">Sign Up</router-link></b-dropdown-item> -->
           </v-card-text>
         </v-card>
       </v-col>
@@ -39,27 +47,62 @@
 </template>
 
 <script>
+// import { login } from '../firebaseService';
+// import axios from "axios"
   export default {
     data () {
       return {
-        userName: '',
-        password: '',
+      user: {
+        uid: '',
+        password: ''
+      },
+    };
+    },
+
+    methods: {
+    login() {
+      if(this.user.uid==''){
+        alert('帳號不能為空！')
+        // this.$message.error('帳號不能為空');
+      }else if(this.user.password==''){
+        alert('密碼不能為空！')
+        // this.$message.error('密碼不能為空');
+      }else{
+        this.axios.get('/', {
+        // this.axios.post('/', {
+          params:{
+          // user:{
+            uid: this.user.uid,
+            password: this.user.password
+          }
+        }).then(res=>{
+          if(res.data.status==200){
+            this.$router.push({
+              path: '/home',
+              query:{
+                uid: this.user.uid
+              }
+            })
+          }else{
+            // this.$alert('帳號或密碼錯誤',{
+            alert('帳號或密碼錯誤',{
+            confirmButtonText: '確定',
+            callback: action => {
+              this.user.uid='',
+              this.user.password=''
+            }
+          });
+          }
+        }).catch(err=>{
+          console.log("登入失敗"+ err);
+        })
       }
     },
-    methods: {
-      login(){
-        //-- write login authencation logic here! --
-        //let auth = true;
-        if( this.userName == 'user' && this.password == '1234' )
-        {
-            localStorage.setItem('token', 'ImLogin')
-            this.$router.push('/home');
-        }
-        else
-          alert('帳號密碼有誤！')
-      }
-    }
+    // register(){
+    //   this.$router.push('/register');
+    // }
   }
+}
 </script>
 
 <style scoped>
