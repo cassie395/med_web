@@ -16,17 +16,8 @@
         ></v-avatar>
 
         <div id="app">
-          user
-          {{userName}}
+          {{uid}}
         </div>
-        <!-- <br>
-          <a href="" @click.prevent="logout">
-            <v-btn 
-                type="submit"
-                color="secondary">
-                Log Out
-            </v-btn>
-          </a> -->
       </v-sheet>
 
       <v-divider></v-divider>
@@ -65,11 +56,22 @@
       <router-view></router-view>
     </v-main>
   </v-app>
+
+<!-- <b-nav-item-dropdown text="User" right>
+  <b-dropdown-item><router-link to="/login">Login</router-link></b-dropdown-item>
+  <b-dropdown-item><router-link to="/register">Register</router-link></b-dropdown-item>
+  <b-dropdown-item><router-link to="/logout">Logout</router-link></b-dropdown-item>
+</b-nav-item-dropdown> -->
+
 </template>
 
 <script>
   export default {
     data: () => ({
+      return: {
+        uid: ' '
+      },
+      // uid: ' ',
       drawer: null,
       links: [
         ['mdi-home', '主頁', '/home'],
@@ -81,7 +83,17 @@
         ['mdi-text-box-edit', '總數稽核', '/check-all'],
         ['mdi-text-box-check', '稽核結果', '/result'],
         ['mdi-table', '統計圖表', '/table'],
+      //   query:{
+      //   uid: this.user.uid
+      // },
       ],
+      // query:{
+      //   uid: this.user.uid
+      // },
     }),
+    created(){
+      this.uid=this.$route.query.uid;
+      // this.uid=this.query.uid;
+    },
   }
 </script>
