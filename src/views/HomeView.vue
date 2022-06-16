@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <div class="home">
         <h1>歡迎使用點班系統</h1>
-        <h2>您好，{{userName}} 護理師</h2>
+        <h2>您好，{{uid}} 護理師</h2>
       </div>
       <!-- <div>
         <h1>UserInfo</h1>
@@ -25,16 +25,26 @@
 </template>
 
 <script>
+  // import {logout} from '../firebaseService'
   export default {
     data () {
       return {
-        userName: 'user',
+        uid: ' '
       }
+    },
+    created(){
+      this.uid=this.$route.query.uid;
     },
     methods: {
       logout(){
-        localStorage.removeItem('token');
-        this.$router.push('/');
+            // action => {
+            //   this.user.uid='',
+            //   this.user.password=''
+            // }
+          // update the authenticated user
+          this.uid='',
+          // this.$store.commit('setUser', {});
+          this.$router.push('/');
       }
     },
   }
