@@ -10,9 +10,15 @@
   "dependencies": {
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "firebase": "^9.8.2",
+    "mysql": "^2.18.1",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
-    "vuetify": "^2.6.0"
+    "vuefire": "^3.0.0-alpha.2",
+    "vuetify": "^2.6.0",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -42,7 +48,8 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {
-      "vue/no-unused-components": "off"
+      "vue/no-unused-components": "off",
+      "no-unused-vars": "off"
     }
   },
   "browserslist": [
