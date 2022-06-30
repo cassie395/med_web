@@ -31,14 +31,6 @@
                   Log In
               </v-btn>
             </form>
-              <!-- <v-btn 
-                type="submit"
-                color="secondary"
-                style="float:right"
-                @click.prevent="signup">
-                  Sign Up
-              </v-btn> -->
-              <!-- <b-dropdown-item><router-link to="/register">Sign Up</router-link></b-dropdown-item> -->
           </v-card-text>
         </v-card>
       </v-col>
@@ -47,8 +39,6 @@
 </template>
 
 <script>
-// import { login } from '../firebaseService';
-// import axios from "axios"
   export default {
     data () {
       return {
@@ -60,49 +50,47 @@
     },
 
     methods: {
-    login() {
-      if(this.user.uid==''){
-        alert('帳號不能為空！')
-        // this.$message.error('帳號不能為空');
-      }else if(this.user.password==''){
-        alert('密碼不能為空！')
-        // this.$message.error('密碼不能為空');
-      }else{
-        this.axios.get('/', {
-        // this.axios.post('/', {
-          params:{
-          // user:{
-            uid: this.user.uid,
-            password: this.user.password
-          }
-        }).then(res=>{
-          if(res.data.status==200){
-            this.$router.push({
-              path: '/home',
-              query:{
-                uid: this.user.uid
-              }
-            })
-          }else{
-            // this.$alert('帳號或密碼錯誤',{
-            alert('帳號或密碼錯誤',{
-            confirmButtonText: '確定',
-            callback: action => {
-              this.user.uid='',
-              this.user.password=''
+      login() {
+        if(this.user.uid==='' || this.user.password===''){
+          alert('帳號或密碼不能為空！')
+        }else{
+          this.axios.get('/', {
+          // this.$api.post('请求的后端接口链接',{
+          // axios.get('/', {
+            params:{
+            // user:{
+              uid: this.user.uid,
+              password: this.user.password,
             }
-          });
-          }
-        }).catch(err=>{
-          console.log("登入失敗"+ err);
-        })
-      }
-    },
-    // register(){
-    //   this.$router.push('/register');
-    // }
+          }).then(res=>{
+            if(res.data.status==200){
+              localStorage.setItem('token', 'ImLogin')
+              this.$router.push({
+                path: '/home',
+                query:{
+                  uid: this.user.uid
+                }
+              })
+              // alert('成功')
+            }else{
+              alert('帳號或密碼錯誤',{
+              confirmButtonText: '確定',
+              callback: action => {
+                this.user.uid='',
+                this.user.password=''
+              }
+            });
+            }
+          }).catch(err=>{
+            console.log("登入失敗"+ err);
+          })
+        }
+      },
+      // register(){
+      //   this.$router.push('/register');
+      // }
+    }
   }
-}
 </script>
 
 <style scoped>
