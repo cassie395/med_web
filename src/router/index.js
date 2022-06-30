@@ -24,9 +24,8 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: HomeView
+    component: HomeView,
   },
-  
   {
     path: '/info',
     name: 'info',
@@ -84,5 +83,29 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+//使用push的方法
+// const RouterPush = VueRouter.prototype.push
+// VueRouter.prototype.push = function push (to) {
+//   return RouterPush.call(this, to).catch(err => err)
+// }
+
+//使用replace的方法
+// const RouterReplace = VueRouter.prototype.replace
+// VueRouter.prototype.replace = function replace (to) {
+//   return RouterReplace.call(this, to).catch(err => err)
+// }
+
+router.beforeEach((to, from, next)=>{
+  const isLogin = localStorage.getItem('token') == 'ImLogin' ;
+  if( isLogin ){
+    next();
+  } else {
+    if( to.path !== '/')
+      next('/');
+    else
+      next();
+  }
+});
 
 export default router
