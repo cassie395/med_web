@@ -3,6 +3,7 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import router from './router'
 
+import {store} from './store'
 import axios from "axios"
 
 Vue.config.productionTip = false
@@ -12,18 +13,6 @@ axios.defaults.baseURL = 'http://127.0.0.1'
 new Vue({
   vuetify,
   router,
-  // store,
+  store,
   render: h => h(App)
 }).$mount('#app')
-
-// router.beforeEach((to, from, next)=>{
-//   // const isLogin = localStorage.getItem('token') == 'ImLogin' ;
-//   if( this.user.uid!='' ){ //isLogin
-//     next();
-//   } else {
-//     if( to.path !== '/')
-//       next('/');
-//     else
-//       next();
-//   }
-// });
