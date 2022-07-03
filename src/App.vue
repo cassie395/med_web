@@ -16,7 +16,8 @@
         ></v-avatar>
 
         <div id="app">
-          {{uid}}
+          {{ uid }}
+          <!-- {{uname}} -->
         </div>
       </v-sheet>
 
@@ -26,9 +27,15 @@
         <v-list-item
           v-for="[icon, text, to] in links"
           :key="icon"
-          :to="to"
+          :to="{path:to, query:{uid}}"
           link
         >
+        <!-- <v-list-item
+          v-for="[icon, text] in links"
+          @click="linkto(icon)"
+          :key="icon"
+          link
+        > -->
           <v-list-item-icon>
             <v-icon>{{ icon }}</v-icon>
           </v-list-item-icon>
@@ -56,22 +63,15 @@
       <router-view></router-view>
     </v-main>
   </v-app>
-
-<!-- <b-nav-item-dropdown text="User" right>
-  <b-dropdown-item><router-link to="/login">Login</router-link></b-dropdown-item>
-  <b-dropdown-item><router-link to="/register">Register</router-link></b-dropdown-item>
-  <b-dropdown-item><router-link to="/logout">Logout</router-link></b-dropdown-item>
-</b-nav-item-dropdown> -->
-
 </template>
 
 <script>
   export default {
     data: () => ({
       return: {
-        uid: ' '
+        uid: ' ',
+        // uname: ' '
       },
-      // uid: ' ',
       drawer: null,
       links: [
         ['mdi-home', '主頁', '/home'],
@@ -83,16 +83,11 @@
         ['mdi-text-box-edit', '總數稽核', '/check-all'],
         ['mdi-text-box-check', '稽核結果', '/result'],
         ['mdi-table', '統計圖表', '/table'],
-      //   query:{
-      //   uid: this.user.uid
-      // },
       ],
-      // query:{
-      //   uid: this.user.uid
-      // },
     }),
     created(){
       this.uid=this.$route.query.uid;
+      // this.uname=this.$route.query.uname;
       // this.uid=this.query.uid;
     },
   }
