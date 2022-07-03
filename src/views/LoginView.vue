@@ -68,10 +68,10 @@
               this.$router.push({
                 path: '/home',
                 query:{
-                  uid: this.user.uid
+                  uid: this.user.uid,
                 }
               })
-              // alert('成功')
+              window.location.reload();
             }else{
               alert('帳號或密碼錯誤',{
               confirmButtonText: '確定',
@@ -82,14 +82,19 @@
             });
             }
           }).catch(err=>{
-            console.log("登入失敗"+ err);
+            alert(err);
           })
         }
       },
       // register(){
       //   this.$router.push('/register');
       // }
-    }
+    },
+    // watch:{
+    //   $route(to, from){
+    //     this.$router.go(0)
+    //   },
+    // },
   }
 </script>
 
