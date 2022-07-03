@@ -33,9 +33,9 @@
         // uname: ' '
       }
     },
-    mounted(){
-      this.update();
-    },
+    // mounted(){
+    //   this.update();
+    // },
     created(){
       this.uid=this.$route.query.uid;
       // this.uname=this.$route.query.uname;
@@ -44,6 +44,7 @@
       logout(){
           localStorage.removeItem('token');
           this.$router.push('/');
+          window.location.reload();
       },
     },
   }
