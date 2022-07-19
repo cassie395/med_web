@@ -16,8 +16,7 @@
         ></v-avatar>
 
         <div id="app">
-          {{ uid }}
-          <!-- {{uname}} -->
+          {{ uname }}
         </div>
       </v-sheet>
 
@@ -27,7 +26,7 @@
         <v-list-item
           v-for="[icon, text, to] in links"
           :key="icon"
-          :to="{path:to, query:{uid}}"
+          :to="{path:to, query:{uid, uname, pNo}}"
           link
         >
         <!-- <v-list-item
@@ -70,7 +69,8 @@
     data: () => ({
       return: {
         uid: ' ',
-        // uname: ' '
+        uname: [],
+        pNo: []
       },
       drawer: null,
       links: [
@@ -87,8 +87,8 @@
     }),
     created(){
       this.uid=this.$route.query.uid;
-      // this.uname=this.$route.query.uname;
-      // this.uid=this.query.uid;
+      this.uname=this.$route.query.uname;
+      this.pNo=this.$route.query.pNo;
     },
   }
 </script>
