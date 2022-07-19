@@ -3,8 +3,7 @@
     <v-row align="center" justify="center">
       <div class="home">
         <h1>歡迎使用點班系統</h1>
-        <h2>您好，{{uid}} 護理師</h2>
-        <!-- <h2>您好，{{uname}} 護理師</h2> -->
+        <h2>您好，{{uname}} 護理師</h2>
       </div>
       <!-- <div>
         <h1>UserInfo</h1>
@@ -30,15 +29,12 @@
     data () {
       return {
         uid: ' ',
-        // uname: ' '
+        uname: []
       }
     },
-    // mounted(){
-    //   this.update();
-    // },
     created(){
       this.uid=this.$route.query.uid;
-      // this.uname=this.$route.query.uname;
+      this.uname=this.$route.query.uname;
     },
     methods: {
       logout(){
