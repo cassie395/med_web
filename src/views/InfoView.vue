@@ -9,7 +9,7 @@
           <v-card-text class="pa-6 pt-0">
             <v-row no-gutters class="info-widget pb-6">
               <v-col cols="12" class="card-dark-grey">
-                <p class="text-body-1">負責區域: </p>
+                <p class="text-body-1">負責區域: {{pNo}} </p>
                 <p class="text-body-1">點班情況: </p>
                 <p class="text-body-1">點班日期: {{date}}</p>
                 <p class="text-body-1">點班時間: {{time}}</p>
@@ -35,8 +35,12 @@
 <script>
   export default {
     data: () => ({
+      pNo: [],
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       time: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(11, 11).split(".")[0],
     }),
+    created(){
+      this.pNo=this.$route.query.pNo;
+    },
   }
 </script>
