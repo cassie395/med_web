@@ -44,40 +44,52 @@
       return {
       user: {
         uid: '',
-        password: ''
+        password: '',
+        uname: [],
+        pNo: [],
       },
     };
     },
 
     methods: {
       login() {
-        if(this.user.uid==='' || this.user.password===''){
+        var that = this;
+        if(that.user.uid==='' || that.user.password===''){
           alert('帳號或密碼不能為空！')
         }else{
-          this.axios.get('/', {
-          // this.$api.post('请求的后端接口链接',{
-          // axios.get('/', {
+          that.axios.get('/', {
             params:{
             // user:{
-              uid: this.user.uid,
-              password: this.user.password,
+              uid: that.user.uid,
+              password: that.user.password,
             }
-          }).then(res=>{
+          // }).then(res=>{
+          }).then(function(res){
             if(res.data.status==200){
               localStorage.setItem('token', 'ImLogin')
-              this.$router.push({
-                path: '/home',
-                query:{
-                  uid: this.user.uid,
-                }
+              that.axios.get('/user', {params:{uid : that.user.uid}})
+              .then(function(resp){
+                that.user.uname.push(resp.data[0].uname)
+                that.user.pNo.push(resp.data[0].pNo)
+                that.$router.push({
+                  path: '/home',
+                  query:{
+                    uid: that.user.uid,
+                    uname: that.user.uname,
+                    pNo: that.user.pNo
+                  }
+                })
+                window.location.reload();
+              }).catch(function(error){
+                alert('Database Error ' +error)
               })
-              window.location.reload();
             }else{
               alert('帳號或密碼錯誤',{
               confirmButtonText: '確定',
               callback: action => {
-                this.user.uid='',
-                this.user.password=''
+                that.user.uid='',
+                that.user.password=''
+                that.user.uname=''
               }
             });
             }
@@ -86,15 +98,7 @@
           })
         }
       },
-      // register(){
-      //   this.$router.push('/register');
-      // }
     },
-    // watch:{
-    //   $route(to, from){
-    //     this.$router.go(0)
-    //   },
-    // },
   }
 </script>
 
