@@ -4,11 +4,14 @@ let router=express.Router()
 let user=require('./API/user')
 let login=require('./API/login')
 let MedNum=require('./API/MedNum')
+let record=require('./API/record')
 
 router.get('/user', user.get)
 router.get('/', login.login)
 router.get('/getMedNum', MedNum.getMedNum)
 router.get('/updateMedNum', MedNum.updateMedNum)
+router.get('/insertRecord', record.insert)
+router.get('/getRecord', record.get)
 
 
 module.exports=router
