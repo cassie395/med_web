@@ -33,3 +33,39 @@ exports.get=(req,res)=>{
         }
     })
 }
+
+exports.getLastRNO=(req,res)=>{
+    var sql = 'select * from carts where pNo = ?'
+    db.query(sql, [req.query.pNo], (err, data)=>{
+        //console.log(req.query.pNo);
+        if(err){
+            return res.send({
+                status: 400,
+                message: "fail"
+            })
+        }
+        if(data.length>0){
+            console.log(data)
+            res.json(data);
+        }
+    })
+}
+
+exports.updateLastRNO=(req,res)=>{
+    var sql = 'update carts set rNo = ? where pNo = ?'
+    db.query(sql, [req.query.rNo, req.query.pNo], (err, data)=>{
+        //console.log(req.query.pNo);
+        if(err){
+            return res.send({
+                status: 400,
+                message: "fail"
+            })
+        }
+        else{
+            res.send({
+                status: 200,
+                message: "success"
+            })
+        }
+    })
+}
