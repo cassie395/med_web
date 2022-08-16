@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
 import InfoView from '../views/InfoView.vue'
 import ListView from '../views/ListView.vue'
+import SearchView from '../views/SearchView.vue'
 import AcontView from '../views/AcontView'
 import LockView from '../views/LockView'
 import CheckAllView from '../views/CheckAllView'
@@ -35,6 +36,11 @@ const routes = [
     path: '/list',
     name: 'list',
     component: ListView
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: SearchView
   },
   {
     path: '/account',
@@ -84,23 +90,11 @@ const router = new VueRouter({
   routes
 })
 
-//使用push的方法
-// const RouterPush = VueRouter.prototype.push
-// VueRouter.prototype.push = function push (to) {
-//   return RouterPush.call(this, to).catch(err => err)
-// }
-
-//使用replace的方法
-// const RouterReplace = VueRouter.prototype.replace
-// VueRouter.prototype.replace = function replace (to) {
-//   return RouterReplace.call(this, to).catch(err => err)
-// }
-
 router.beforeEach((to, from, next)=>{
   const isLogin = localStorage.getItem('token') == 'ImLogin' ;
-  if( isLogin ){
+  if( isLogin )
     next();
-  } else {
+  else {
     if( to.path !== '/')
       next('/');
     else
