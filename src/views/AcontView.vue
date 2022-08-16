@@ -5,11 +5,7 @@
         <v-toolbar flat>
           <v-toolbar-title>個人點班紀錄</v-toolbar-title>
         </v-toolbar>
-        <v-text-field
-          v-model="search"
-          label="請輸入搜尋"
-          class="mx-4"
-        ></v-text-field>
+        
       </template>
       <template v-slot:default>
         <thead>
@@ -57,14 +53,24 @@
         var length = resp.data.length
         
         for(var i=0; i<length; i++){
+          var record_num = resp.data[i].rNo
+          var fin = record_num.length
 
-          var temp={
-            date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
-            shift: resp.data[i].record_Time, 
-            number: resp.data[i].pNo}
+          if(record_num[fin-1] == '1'){
+            var temp={
+              date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
+              shift: resp.data[i].record_Time + ' (補)', 
+              number: resp.data[i].pNo}
+          }
+          else{
+            temp={
+              date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
+              shift: resp.data[i].record_Time, 
+              number: resp.data[i].pNo}
+          }
 
           this.records.push(temp)
-      }
+        }
       }).catch((error) => {
         alert('Database Error ' +error)
       })
