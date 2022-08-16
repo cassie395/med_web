@@ -14,6 +14,6 @@ router.get('/updateMedNum', MedNum.updateMedNum)
 router.get('/insertRecord', record.insert)
 router.get('/getRecord', record.get)
 router.get('/shift', check.shift)
-router.get('/getShift', check.get
+router.get('/getShift', check.get)
 
 module.exports=router
