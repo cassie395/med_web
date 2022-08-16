@@ -13,6 +13,7 @@ import TableView from '../views/TableView'
 import ResultView from '../views/ResultView'
 import DetcView from '../views/DetcView'
 import LayerView from '../views/LayerView'
+import AddView from '../views/AddView'
 
 Vue.use(VueRouter)
 
@@ -25,8 +26,9 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: HomeView,
+    component: HomeView
   },
+  
   {
     path: '/info',
     name: 'info',
@@ -73,7 +75,7 @@ const routes = [
     component: ResultView
   },
   {
-    path: '/info/detect',
+    path: '/detect',
     name: 'detect',
     component: DetcView
   },
@@ -81,6 +83,11 @@ const routes = [
     path: '/layer',
     name: 'layer',
     component: LayerView
+  },
+  {
+    path: '/add',
+    name: 'add',
+    component: AddView
   },
 ]
 
@@ -92,9 +99,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next)=>{
   const isLogin = localStorage.getItem('token') == 'ImLogin' ;
-  if( isLogin )
+  if( isLogin ){
     next();
-  else {
+  } else {
     if( to.path !== '/')
       next('/');
     else
