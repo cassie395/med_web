@@ -76,6 +76,7 @@
       links: [
         ['mdi-home', '主頁', '/home'],
         ['mdi-pill', '急救車點班', '/info'],
+        ['mdi-plus-box-outline', '藥品/醫材補班', '/add'],
         ['mdi-account', '個人點班記錄', '/account'],
         ['mdi-list-status', '急救車點班情況', '/list'],
         ['mdi-lock', '急救車鎖定', '/lock'],
