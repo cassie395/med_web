@@ -99,6 +99,13 @@
         }
       },
     },
+    mounted(){
+      if (this.user.uid=='')
+      {
+          // this.$router.push('/');
+          localStorage.removeItem('token');
+      }
+    }
   }
 </script>
 
