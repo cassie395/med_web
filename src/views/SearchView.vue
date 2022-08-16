@@ -64,11 +64,21 @@
         var length = resp.data.length
         
         for(var i=0; i<length; i++){
+          var record_num = resp.data[i].rNo
+          var fin = record_num.length
 
-          var temp={
-            date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
-            shift: resp.data[i].record_Time, 
-            number: resp.data[i].pNo}
+          if(record_num[fin-1] == '1'){
+            var temp={
+              date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
+              shift: resp.data[i].record_Time + ' (補)', 
+              number: resp.data[i].pNo}
+          }
+          else{
+            temp={
+              date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
+              shift: resp.data[i].record_Time, 
+              number: resp.data[i].pNo}
+          }
 
           this.records.push(temp)
       }
@@ -76,13 +86,5 @@
         alert('Database Error ' +error)
       })
     }
-    // methods: {
-    //   filterOnlyCapsText (value, search) {
-    //     return value != null &&
-    //       search != null &&
-    //       typeof value === 'string' &&
-    //       value.toString().toLocaleUpperCase().indexOf(search) !== -1
-    //   },
-    // },
   }
 </script>
