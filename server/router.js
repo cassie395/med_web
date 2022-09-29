@@ -19,6 +19,8 @@ router.get('/getRecord', record.get)
 router.get('/getLastRNO', record.getLastRNO)
 router.get('/updateLastRNO', record.updateLastRNO)
 router.get('/shift', check.shift)
+router.get('/psn', check.psn)
 router.get('/getShift', check.get)
+router.get('/getPsn', check.getp)
 
 module.exports=router
