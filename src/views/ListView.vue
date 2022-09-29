@@ -12,6 +12,7 @@
               <br>
               <v-date-picker
                 v-model="record_Date"
+                locale="zh-tw"
                 color="#444444"
                 header-color="#888888"
               ></v-date-picker>
