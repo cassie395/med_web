@@ -1,80 +1,96 @@
 <template>
-  <div>
-    <v-simple-table>
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>個人點班紀錄</v-toolbar-title>
-        </v-toolbar>
-        
-      </template>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">點班日期</th>
-            <th class="text-left">班次</th>
-            <th class="text-left">急救車編號</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="item in records"
-            :key="item.date">
-              <td>{{ item.date }}</td>
-              <td>{{ item.shift }}</td>
-              <td>{{ item.number }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
-  </div>
+  <v-container fluid class="search-list-page">
+    <v-row>
+      <v-col lg=12 cols=12>
+        <v-card class="mx-1 mb-1" color="rgb(224, 224, 224, 0.2)">
+          <v-card-title class="pa-6 pb-0">
+            <h3>
+              個人點班記錄
+            </h3>
+          </v-card-title>
+          <v-card-text class="pa-6 pt-0">
+              <br>
+              <v-date-picker
+                v-model="dates"
+                range
+                locale="zh-tw"
+                color="#444444"
+                header-color="#888888"
+              ></v-date-picker>
+              <br>
+              <br>
+              <v-btn 
+                type="primary"
+                color="secondary"
+                @click="search">
+                  搜尋
+              </v-btn>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-  import axios from 'axios';
-  import moment from 'moment';
-  
   export default {
     data () {
       return {
-        search: '',
-        calories: '',
-        records:[]
-      }
+      user: {
+        uid: '',
+        uname: '',
+        pNo: '',
+      },
+      dates: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      computed: {
+        dateRangeText () {
+          return this.dates.join(' ~ ')
+        },
+      },
+    };
     },
-
-    created () {
-      this.uid = this.$route.query.uid
+    created(){
+      this.user.uid=this.$route.query.uid;
+      this.user.uname=this.$route.query.uname;
+      this.user.pNo=this.$route.query.pNo;
     },
-
-    mounted () {
-      axios.get('/getRecord', {params:{uid : this.uid}})
-      .then((resp) => {
-
-        var length = resp.data.length
-        
-        for(var i=0; i<length; i++){
-          var record_num = resp.data[i].rNo
-          var fin = record_num.length
-
-          if(record_num[fin-1] == '1'){
-            var temp={
-              date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
-              shift: resp.data[i].record_Time + ' (補)', 
-              number: resp.data[i].pNo}
+    methods: {
+      search() {
+        var that = this;
+        var a=0, b=1;
+          if(that.dates[0]>that.dates[1]){
+            a=1;
+            b=0;
           }
-          else{
-            temp={
-              date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
-              shift: resp.data[i].record_Time, 
-              number: resp.data[i].pNo}
-          }
-
-          this.records.push(temp)
-        }
-      }).catch((error) => {
-        alert('Database Error ' +error)
-      })
-    }
-
+          that.axios.get('/psn', {
+            params:{
+              // begin_Date: that.dates,
+              begin_Date: that.dates[a],
+              fin_Date: that.dates[b],
+            }
+          }).then(function(res){
+            if(res.data.status==200){
+                that.$router.push({
+                  path: '/acsearch',
+                  query:{
+                    uid: that.user.uid,
+                    uname: that.user.uname,
+                    pNo: that.user.pNo,
+                    // begin_Date: that.dates,
+                    begin_Date: that.dates[a],
+                    fin_Date: that.dates[b],
+                  }
+                })
+            }
+            else{
+              alert('查無資料',{
+              confirmButtonText: '確定',
+            });
+            }
+          }).catch(err=>{
+            alert(err);
+          })
+      },
+    },
   }
 </script>
