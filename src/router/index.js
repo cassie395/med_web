@@ -6,6 +6,7 @@ import InfoView from '../views/InfoView.vue'
 import ListView from '../views/ListView.vue'
 import SearchView from '../views/SearchView.vue'
 import AcontView from '../views/AcontView'
+import AcSearchView from '../views/AcSearchView'
 import LockView from '../views/LockView'
 import CheckAllView from '../views/CheckAllView'
 import CheckMView from '../views/CheckMView'
@@ -48,6 +49,11 @@ const routes = [
     path: '/account',
     name: 'account',
     component: AcontView
+  },
+  {
+    path: '/acsearch',
+    name: 'acsearch',
+    component: AcSearchView
   },
   {
     path: '/lock',
