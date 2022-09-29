@@ -9,7 +9,7 @@
 
     <v-file-input
       accept="image/jpg"
-      placeholder="請選擇檔案"
+      placeholder="Please select a file"
       prepend-icon="mdi-file"
       @change="previewImage"
       v-model="image"
@@ -43,9 +43,20 @@
         url: null,
         image: null,
         num: null,
-        cNo: '',
-        medActual: [],
+        uid: this.$route.query.uid,
+        uname: this.$route.query.uname,
+        pNo: this.$route.query.pNo,
+        record_id: null,
       }
+    },
+    mounted() {
+      axios.get('/getLastRNO', {params:{pNo : '7D'}})
+      .then((resp) => {
+        this.record_id = resp.data[0].rNo
+        //alert(this.record_id)
+      }).catch((error) => {
+        alert('Database Error ' +error)
+      })
     },
     methods: {
       previewImage () {
@@ -53,34 +64,6 @@
       },
       upload () {
         var that = this;
-
-        axios.get('/getMedNum', {params:{pNo : '7D'}})
-        .then(function(resp){
-          that.medActual.push(resp.data[0].med01)
-          that.medActual.push(resp.data[0].med02)
-          that.medActual.push(resp.data[0].med03)
-          that.medActual.push(resp.data[0].med04)
-          that.medActual.push(resp.data[0].med05)
-          that.medActual.push(resp.data[0].med06)
-          that.medActual.push(resp.data[0].med07)
-          that.medActual.push(resp.data[0].med08)
-          that.medActual.push(resp.data[0].med09)
-          that.medActual.push(resp.data[0].med10)
-          that.medActual.push(resp.data[0].med11)
-          that.medActual.push(resp.data[0].med12)
-          that.medActual.push(resp.data[0].med13)
-          that.medActual.push(resp.data[0].med14)
-          that.medActual.push(resp.data[0].med15)
-          that.medActual.push(resp.data[0].med16)
-          that.medActual.push(resp.data[0].med17)
-          that.medActual.push(resp.data[0].med18)
-          that.medActual.push(resp.data[0].med19)
-          that.medActual.push(resp.data[0].med20)
-          //alert(that.medActual)
-          
-        }).catch(function(error){
-          alert('Database Error ' +error)
-        })
 
         const formData = new FormData();
         formData.append('image', that.image)
@@ -100,8 +83,11 @@
             path: "/layer",
             name: 'layer',
             query:{
+              uid : that.uid,
+              uname : that.uname,
+              pNo : that.pNo,
               num : that.num,
-              actual_num: that.medActual
+              rNo : that.record_id
             }
           })
 
@@ -124,44 +110,20 @@
           that.num = that.num.substring(1, (that.num.length-1));
           //alert(that.num)
 
-        }).catch(function(error){
-          alert('Error '+error)
-        })
-
-        axios.get('/getMedNum', {params:{pNo : '7D'}})
-        .then(function(resp){
-          that.medActual.push(resp.data[0].med01)
-          that.medActual.push(resp.data[0].med02)
-          that.medActual.push(resp.data[0].med03)
-          that.medActual.push(resp.data[0].med04)
-          that.medActual.push(resp.data[0].med05)
-          that.medActual.push(resp.data[0].med06)
-          that.medActual.push(resp.data[0].med07)
-          that.medActual.push(resp.data[0].med08)
-          that.medActual.push(resp.data[0].med09)
-          that.medActual.push(resp.data[0].med10)
-          that.medActual.push(resp.data[0].med11)
-          that.medActual.push(resp.data[0].med12)
-          that.medActual.push(resp.data[0].med13)
-          that.medActual.push(resp.data[0].med14)
-          that.medActual.push(resp.data[0].med15)
-          that.medActual.push(resp.data[0].med16)
-          that.medActual.push(resp.data[0].med17)
-          that.medActual.push(resp.data[0].med18)
-          that.medActual.push(resp.data[0].med19)
-          that.medActual.push(resp.data[0].med20)
-
           that.$router.push({
             path: "/layer",
             name: 'layer',
             query:{
+              uid : that.uid,
+              uname : that.uname,
+              pNo : that.pNo,
               num : that.num,
-              actual_num: that.medActual
+              rNo : that.record_id
             }
           })
-          
+
         }).catch(function(error){
-          alert('Database Error ' +error)
+          alert('Error '+error)
         })
       },
     }

@@ -80,24 +80,11 @@
               number: resp.data[i].pNo}
           }
 
-          // var temp={
-          //   date: moment(resp.data[i].record_Date).format('YYYY-MM-DD'),
-          //   shift: resp.data[i].record_Time, 
-          //   number: resp.data[i].pNo}
-
           this.records.push(temp)
       }
       }).catch((error) => {
         alert('Database Error ' +error)
       })
     }
-    // methods: {
-    //   filterOnlyCapsText (value, search) {
-    //     return value != null &&
-    //       search != null &&
-    //       typeof value === 'string' &&
-    //       value.toString().toLocaleUpperCase().indexOf(search) !== -1
-    //   },
-    // },
   }
 </script>

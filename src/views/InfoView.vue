@@ -10,7 +10,6 @@
             <v-row no-gutters class="info-widget pb-6">
               <v-col cols="12" class="card-dark-grey">
                 <p class="text-body-1">負責區域: {{pNo}} </p>
-                <p class="text-body-1">點班情況: </p>
                 <p class="text-body-1">點班日期: {{date}}</p>
                 <p class="text-body-1">點班時間: {{time}}</p>
 
@@ -21,7 +20,7 @@
               v-on="on"
               color="secondary"
               class="text-capitalize button-shadow mr-1"
-              @click.native="$router.push('/info/detect')">
+              @click.native="toDetect">
                 開始點班
               </v-btn>
             </v-row>
@@ -35,12 +34,29 @@
 <script>
   export default {
     data: () => ({
-      pNo: [],
+      uid: null,
+      uname: null,
+      pNo: null,
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       time: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(11, 11).split(".")[0],
     }),
     created(){
+      this.uid=this.$route.query.uid;
+      this.uname=this.$route.query.uname;
       this.pNo=this.$route.query.pNo;
     },
+    methods: {
+      toDetect() {
+        this.$router.push({
+          path: "/detect",
+          name: 'detect',
+          query:{
+            uid : this.uid,
+            uname : this.uname,
+            pNo : this.pNo,
+          }
+        })
+      }
+    }
   }
 </script>

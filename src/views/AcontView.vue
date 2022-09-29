@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="search-list-page">
     <v-row>
-      <v-col lg=12 cols=12>
+      <v-col align="center" justify="center">
         <v-card class="mx-1 mb-1" color="rgb(224, 224, 224, 0.2)">
           <v-card-title class="pa-6 pb-0">
             <h3>

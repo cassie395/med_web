@@ -56,23 +56,12 @@
       </v-stepper-step>
 
       <v-divider></v-divider>
-
+      
       <v-stepper-step
         :complete="e1 > 6"
         color = "secondary"
         editable
         step="6"
-      >
-        外層
-      </v-stepper-step>
-
-      <v-divider></v-divider>
-      
-      <v-stepper-step
-        :complete="e1 > 7"
-        color = "secondary"
-        editable
-        step="7"
       >
         確認
       </v-stepper-step>
@@ -81,26 +70,8 @@
     <v-stepper-items>
       <v-stepper-content step="1">
         <LayerOne 
-          @med01_new="renew_med01"
-          @med02_new="renew_med02"
-          @med03_new="renew_med03"
-          @med04_new="renew_med04"
-          @med05_new="renew_med05"
-          @med06_new="renew_med06"
-          @med07_new="renew_med07"
-          @med08_new="renew_med08"
-          @med09_new="renew_med09"
-          @med10_new="renew_med10"
-          @med11_new="renew_med11"
-          @med12_new="renew_med12"
-          @med13_new="renew_med13"
-          @med14_new="renew_med14"
-          @med15_new="renew_med15"
-          @med16_new="renew_med16"
-          @med17_new="renew_med17"
-          @med18_new="renew_med18"
-          @med19_new="renew_med19"
-          @med20_new="renew_med20"
+          @layer_change="renew"
+          @layer_insert="insert"
         ></LayerOne>
         <br>
         
@@ -115,7 +86,10 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <LayerTwo></LayerTwo>
+        <LayerTwo
+          @layer_change="renew"
+          @layer_insert="insert">
+        </LayerTwo>
         <br>
 
         <v-row
@@ -137,7 +111,10 @@
       </v-stepper-content>
 
       <v-stepper-content step="3">
-        <LayerThree></LayerThree>
+        <LayerThree
+          @layer_change="renew"
+          @layer_insert="insert">
+        </LayerThree>
         <br>
 
         <v-row
@@ -159,7 +136,11 @@
       </v-stepper-content>
 
       <v-stepper-content step="4">
-        <LayerFour></LayerFour>
+        <LayerFour
+          @layer_change="renew"
+          @layer_insert="insert"
+          >
+        </LayerFour>
         <br>
 
         <v-row
@@ -181,7 +162,10 @@
       </v-stepper-content>
 
       <v-stepper-content step="5">
-        <LayerFive></LayerFive>
+        <LayerFive
+          @layer_change="renew"
+          @layer_insert="insert">
+        </LayerFive>
         <br>
 
         <v-row
@@ -203,41 +187,43 @@
       </v-stepper-content>
 
       <v-stepper-content step="6">
-        <LayerSix></LayerSix>
-        <br>
-
-        <v-row
-        justify="space-between">
-          <v-btn
-            class="mb-4 ms-4"
-            color="secondary"
-            @click="e1 = 5">
-            上一層
-          </v-btn>
-          <v-btn
-            class="mb-4 me-4"
-            color="secondary"
-            @click="e1 = 7">
-            下一層
-          </v-btn>
-        </v-row>
-
-      </v-stepper-content>
-
-      <v-stepper-content step="7">
         <v-card
           class="mb-12"
           style="background-color: #EEEEEE"
           height="200px"
         >
         <v-col>
-          <p class="text-body-1">護理師編號 :</p>
-          <p class="text-body-1">護理師姓名 :</p>
-          <p class="text-body-1">負責區域 :</p>
+          <p class="text-body-1">護理師編號 : {{uid}}</p>
+          <p class="text-body-1">護理師姓名 : {{uname}}</p>
+          <p class="text-body-1">負責區域 : {{pNo}}</p>
           <p class="text-body-1">點班日期 : {{date}}</p>
           <p class="text-body-1">點班時間 : {{time}}</p>
         </v-col>
         </v-card>
+
+        <v-simple-table dense class="pa-2 mb-6 grey lighten-3">
+          <template v-slot:default>
+            <thead>
+                <tr>
+                    <th class="text-left">品項</th>
+                    <th class="text-left">異動數量</th>
+                    <th class="text-left">備註</th>
+                    <th class="text-left">層數</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                  v-for="item in layer_change"
+                  :key="item.name">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.remark }}</td>
+                  <td>{{ item.layer_num}}</td>
+                </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <v-spacer></v-spacer>
 
         <v-btn
           block
@@ -259,7 +245,6 @@ import LayerTwo from '../components/LayerTwo.vue'
 import LayerThree from '../components/LayerThree.vue'
 import LayerFour from '../components/LayerFour.vue'
 import LayerFive from '../components/LayerFive.vue'
-import LayerSix from '../components/LayerSix.vue'
 import axios from 'axios';
 
 export default{
@@ -270,26 +255,11 @@ export default{
         e1: 1,
         date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         time: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(11, 11).split(".")[0],
-        new_med01: parseInt(this.$route.query.num.split(",")[0]),
-        new_med02: parseInt(this.$route.query.num.split(",")[1]),
-        new_med03: parseInt(this.$route.query.num.split(",")[2]),
-        new_med04: parseInt(this.$route.query.num.split(",")[3]),
-        new_med05: parseInt(this.$route.query.num.split(",")[4]),
-        new_med06: parseInt(this.$route.query.num.split(",")[5]),
-        new_med07: parseInt(this.$route.query.num.split(",")[6]),
-        new_med08: parseInt(this.$route.query.num.split(",")[7]),
-        new_med09: parseInt(this.$route.query.num.split(",")[8]),
-        new_med10: parseInt(this.$route.query.num.split(",")[9]),
-        new_med11: parseInt(this.$route.query.num.split(",")[10]),
-        new_med12: parseInt(this.$route.query.num.split(",")[11]),
-        new_med13: parseInt(this.$route.query.num.split(",")[12]),
-        new_med14: parseInt(this.$route.query.num.split(",")[13]),
-        new_med15: parseInt(this.$route.query.num.split(",")[14]),
-        new_med16: parseInt(this.$route.query.num.split(",")[15]),
-        new_med17: parseInt(this.$route.query.num.split(",")[16]),
-        new_med18: parseInt(this.$route.query.num.split(",")[17]),
-        new_med19: parseInt(this.$route.query.num.split(",")[18]),
-        new_med20: parseInt(this.$route.query.num.split(",")[19])
+        layer_change: [],
+        layerInsert: [],
+        uid: this.$route.query.uid,
+        uname: this.$route.query.uname,
+        pNo: this.$route.query.pNo,
       }
     },
   create() {
@@ -300,8 +270,7 @@ export default{
     LayerTwo,
     LayerThree,
     LayerFour,
-    LayerFive,
-    LayerSix
+    LayerFive
   },
   methods: {
     next: function(pageIndex) {
@@ -311,104 +280,143 @@ export default{
 			_this.historyList = _this.list.slice(_start, _end);
 			_this.page = pageIndex;
 		},
-    send (){
+    async send (){
       const that = this
-      axios.get('/updateMedNum', {
+      
+      var time_temp = this.getTimeState()
+      var rNo_temp = this.uid + this.date.substr(2,2) + this.date.substr(5,2) + this.date.substr(8,2) + time_temp + 'A0'
+
+      var time_temp_C = this.getTimeState_C()
+
+      //alert(rNo_temp)
+
+      await axios.get('/updateLastRNO', {
         params:
           {
-            pNo: '7D',
-            med01: parseInt(this.new_med01),
-            med02: parseInt(this.new_med02),
-            med03: parseInt(this.new_med03),
-            med04: parseInt(this.new_med04),
-            med05: parseInt(this.new_med05),
-            med06: parseInt(this.new_med06),
-            med07: parseInt(this.new_med07),
-            med08: parseInt(this.new_med08),
-            med09: parseInt(this.new_med09),
-            med10: parseInt(this.new_med10),
-            med11: parseInt(this.new_med11),
-            med12: parseInt(this.new_med12),
-            med13: parseInt(this.new_med13),
-            med14: parseInt(this.new_med14),
-            med15: parseInt(this.new_med15),
-            med16: parseInt(this.new_med16),
-            med17: parseInt(this.new_med17),
-            med18: parseInt(this.new_med18),
-            med19: parseInt(this.new_med19),
-            med20: parseInt(this.new_med20)
+            rNo: rNo_temp,
+            pNo: this.pNo
           }
         })
       .then(function(resp){
         alert('已送出')
-        if(resp.status == 200){
-          that.$router.push({
-              path: "/info",
-          })
-        }
       }).catch(function(error){
         alert('Database Error ' +error)
       })
+
+      await axios.get('/insertRecord', {
+        params:
+          {
+            rNo: rNo_temp,
+            uid: this.uid,
+            pNo: this.pNo,
+            date: this.date,
+            time: time_temp_C,
+          }
+        })
+      .then(function(resp){
+        //alert('已送出')
+      }).catch(function(error){
+        alert('Database Error ' +error)
+      })
+
+      for(var i=0; i<90; i++){
+        await axios.get('/updateMedNum', {
+          params:
+          {
+            rNo: rNo_temp,
+            pNo: this.pNo,
+            itemName: this.layerInsert[i].name,
+            quantity: this.layerInsert[i].quantity,
+            layer: this.layerInsert[i].layerNum,
+            remark: this.layerInsert[i].remark,
+          }
+        })
+        .then(function(resp){
+          //alert('已送出')
+        }).catch(function(error){
+          alert('Database Error ' +error)
+        })
+      }
+
+      that.$router.push({
+        path: "/info",
+        query:{
+          uid : this.uid,
+          uname : this.uname,
+          pNo : this.pNo,
+        }
+      })
     },
-    renew_med01(data){
-      this.new_med01 = data
+
+    renew(name, qua, in_qua, remark, layer){
+      if(qua != 0){
+        var index = this.layer_change.findIndex(function(item, index, array){
+          return item.name === name
+        })
+        let temp={
+          name: name, 
+          quantity: qua, 
+          remark: remark,
+          layer_num: layer}
+        if(index!=-1)
+          this.layer_change.splice(index,1)
+        this.layer_change.push(temp)
+      }
+      else if(qua == 0){
+        index = this.layer_change.findIndex(function(item, index, array){
+          return item.name === name
+        })
+        this.layer_change.splice(index,1)
+      }
+      
+      var index_in = this.layerInsert.findIndex(function(item, index, array){
+        return item.name === name
+      })
+      this.layerInsert[index_in].quantity = in_qua
+      this.layerInsert[index_in].remark = String(remark)
     },
-    renew_med02(data){
-      this.new_med02 = data
+
+    insert(name, qua, lay, remark){
+      let temp_in={
+        name: String(name),
+        quantity: qua,
+        remark: remark,
+        layerNum: lay,
+      }
+      this.layerInsert.push(temp_in)
+      //alert(this.layerInsert[1].name)
     },
-    renew_med03(data){
-      this.new_med03 = data
+
+    getTimeState(){
+      let timeNow = new Date();
+      let hours = timeNow.getHours();
+      
+      let state= '';
+      
+      if (hours >= 0 && hours <= 7) {
+        state = 'N';
+      } else if (hours > 7 && hours <= 15) {
+        state= 'D';
+      } else if (hours > 15 && hours <= 24) {
+        state= 'E';
+      }
+      return state;
     },
-    renew_med04(data){
-      this.new_med04 = data
-    },
-    renew_med05(data){
-      this.new_med05 = data
-    },
-    renew_med06(data){
-      this.new_med06 = data
-    },
-    renew_med07(data){
-      this.new_med07 = data
-    },
-    renew_med08(data){
-      this.new_med08 = data
-    },
-    renew_med09(data){
-      this.new_med09 = data
-    },
-    renew_med10(data){
-      this.new_med10 = data
-    },
-    renew_med11(data){
-      this.new_med11 = data
-    },
-    renew_med12(data){
-      this.new_med12 = data
-    },
-    renew_med13(data){
-      this.new_med13 = data
-    },
-    renew_med14(data){
-      this.new_med14 = data
-    },
-    renew_med15(data){
-      this.new_med15 = data
-    },
-    renew_med16(data){
-      this.new_med16 = data
-    },
-    renew_med17(data){
-      this.new_med17 = data
-    },
-    renew_med18(data){
-      this.new_med18 = data
-    },
-    renew_med19(data){
-      this.new_med19 = data
-    },
-    renew_med20(data){
-      this.new_med20 = data
+
+    getTimeState_C(){
+      let timeNow = new Date();
+      let hours = timeNow.getHours();
+      
+      let state= '';
+      
+      if (hours >= 0 && hours <= 7) {
+        state = '大夜班';
+      } else if (hours > 7 && hours <= 15) {
+        state= '日班';
+      } else if (hours > 15 && hours <= 24) {
+        state= '小夜班';
+      }
+      return state;
     },
   }
 }
