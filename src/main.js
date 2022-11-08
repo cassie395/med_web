@@ -8,7 +8,7 @@ import axios from "axios"
 
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
-axios.defaults.baseURL = 'http://192.168.43.34'//ip address
+axios.defaults.baseURL = 'http://192.168.43.34'
 
 new Vue({
   vuetify,
