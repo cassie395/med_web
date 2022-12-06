@@ -63,9 +63,12 @@
                     v-for="item in layer3"
                     :key="item.name"
                 >
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.quantity }} / {{ item.exact_quantity }}</td>
-                    <td>{{ item.remark }}</td>
+                    <td v-if="item.quantity==item.exact_quantity">{{ item.name }}</td>
+                    <td v-if="item.quantity!=item.exact_quantity"><strong class="red--text text--lighten-1">{{ item.name }}</strong></td>
+                    <td v-if="item.quantity==item.exact_quantity">{{ item.quantity }} / {{ item.exact_quantity }}</td>
+                    <td v-if="item.quantity!=item.exact_quantity"><strong class="red--text text--lighten-1">{{ item.quantity }} / {{ item.exact_quantity }}</strong></td>
+                    <td v-if="item.quantity=item.exact_quantity">{{ item.remark }}</td>
+                    <td v-if="item.quantity!=item.exact_quantity"><strong class="red--text text--lighten-1">{{ item.remark }}</strong></td>
                     <td>
                       <v-btn
                         class="ma-0 pa-0"
@@ -122,8 +125,9 @@
 
             await axios.get('/getExactNum', {params:{pNo : pNo, layer : 3}})
             .then((resp) => {
-        
-                for(var i=0; i<7; i++){
+                let data_num = resp.data.length;
+
+                for(var i=0; i<data_num; i++){
 
                     var temp_ex={
                     itemName: resp.data[i].itemName, 
@@ -137,11 +141,13 @@
 
             await axios.get('/getMedNum', {params:{pNo : pNo, layer : 3, rNo : record_id}})
             .then((resp) => {
+                let data_num = resp.data.length;
                 
-                for(var i=0; i<7; i++){
-                    for(var j=0; j<7; j++){
+                for(var i=0; i<data_num; i++){
+                    for(var j=0; j<data_num; j++){
                         if(resp.data[i].itemName == this.exact[j].itemName){
-
+                            if(resp.data[i].remark == 'null')
+                                resp.data[i].remark = null
                             var index = this.layer3.findIndex(function(item, index, array){
                                 return item.name === resp.data[i].name
                             })

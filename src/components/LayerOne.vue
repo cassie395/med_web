@@ -2761,7 +2761,101 @@
       let record_id = this.$route.query.rNo;
       let pNo = this.$route.query.pNo;
 
-      await axios.get('/getMedNum', {params:{pNo : pNo, layer : 1, rNo : record_id}})
+      if(this.$route.query.detect==0){
+        await axios.get('/getMedNum', {params:{pNo : pNo, layer : 1, rNo : record_id}})
+        .then((resp) => {
+        
+        for(var i=0; i<20; i++){
+          if(resp.data[i].itemName == 'Succinylcholine'){
+            this.med1_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Naloxone'){
+            this.med2_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Lasix'){
+            this.med3_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Solu-cortef'){
+            this.med4_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'NTG'){
+            this.med5_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Dobutrex'){
+            this.med6_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Isoptin'){
+            this.med7_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Levophed'){
+            this.med8_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Digoxin'){
+            this.med9_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Dilantin'){
+            this.med10_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Sod.bicarbonate'){
+            this.med11_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Cordarone'){
+            this.med12_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Mag sulfate'){
+            this.med13_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Dopamine'){
+            this.med14_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Cal Gluconate'){
+            this.med15_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Bosmin'){
+            this.med16_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Adenocor'){
+            this.med17_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Atropine'){
+            this.med18_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Lidocaine'){
+            this.med19_change = resp.data[i].quantity;
+            continue;
+          }
+          if(resp.data[i].itemName == 'Valium'){
+            this.med20_change = resp.data[i].quantity;
+            continue;
+          }
+        }
+
+        this.loading = false;
+
+      }).catch((error) => {
+        alert('Database Error ' +error)
+      })
+      }
+      
+      await axios.get('/getExactNum', {params:{pNo : pNo, layer : 1}})
       .then((resp) => {
         
         for(var i=0; i<20; i++){
@@ -2932,6 +3026,7 @@
       }).catch((error) => {
         alert('Database Error ' +error)
       })
+
     },
 
     watch: {
