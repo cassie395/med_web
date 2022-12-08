@@ -22,5 +22,6 @@ router.get('/shift', check.shift)
 router.get('/psn', check.psn)
 router.get('/getShift', check.get)
 router.get('/getPsn', check.getp)
+router.get('/getPsn2', check.getp2)
 
 module.exports=router
