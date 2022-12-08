@@ -3,6 +3,7 @@ let db = require('../db/index')
 exports.getMedNum=(req,res)=>{
     var sql = 'select * from items where pNo = ? and layer = ? and rNo = ?'
     db.query(sql, [req.query.pNo, req.query.layer, req.query.rNo], (err, data)=>{
+        
         if(err){
             return res.send({
                 status: 400,
@@ -10,6 +11,7 @@ exports.getMedNum=(req,res)=>{
             })
         }
         if(data.length>0){
+            console.log(data)
             res.json(data);
         }
     })
@@ -57,7 +59,7 @@ exports.getExactNum=(req,res)=>{
             })
         }
         if(data.length>0){
-            //console.log(data)
+            console.log(data)
             res.json(data);
         }
     })
