@@ -20,7 +20,7 @@ exports.shift=(req, res) => {
         }else{
             res.send({
                 status:202,
-                message: "record date or time is wrong"
+                message: "user id or password is wrong"
             })
         }
         
@@ -76,6 +76,21 @@ exports.psn=(req, res) => {
 exports.getp=(req, res) => {
     var sql = 'select * from records where uid = ? and record_Date between ? and ?'
     db.query(sql, [req.query.uid, req.query.begin_Date, req.query.fin_Date], (err, data) => {
+        if(err){
+            return res.send({
+                status: 400,
+                message: "fail"
+            })
+        }
+        if(data.length>0){
+            res.json(data);
+        }
+    })
+}
+
+exports.getp2=(req, res) => {
+    var sql = 'select * from records where pNo = ? and record_Date between ? and ?'
+    db.query(sql, [req.query.pNo, req.query.begin_Date, req.query.fin_Date], (err, data) => {
         // var sql = 'select * from records where uid = ? and record_Date >= ?'
         // db.query(sql, [req.query.uid, req.query.begin_Date], (err, data) => {
         console.log(req.query.record_Date);
