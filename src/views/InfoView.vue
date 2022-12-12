@@ -11,8 +11,25 @@
               <v-col cols="12" class="card-dark-grey">
                 <p class="text-body-1">負責區域: {{pNo}} </p>
                 <p class="text-body-1">點班日期: {{date}}</p>
-                <p class="text-body-1">點班時間: {{time}}</p>
+                <p class="text-body-1">當前時間: {{time}}</p>
+                <v-card-text class="pa-0 mb-3">
+                  <v-chip-group
+                    v-model="selection"
+                    active-class="secondary white--text"
+                    column
+                    @change="isAddButtonDisabled"
+                  >
+                    <v-chip v-if="t1==1" class="green lighten-1 white--text">白班</v-chip>
+                    <v-chip v-else-if="t1==0" class="red lighten-1 white--text">白班</v-chip>
 
+                    <v-chip v-if="t2==1" class="green lighten-1 white--text">小夜班</v-chip>
+                    <v-chip v-else-if="t2==0" class="red lighten-1 white--text">小夜班</v-chip>
+
+                    <v-chip v-if="t3==1" class="green lighten-1 white--text">大夜班</v-chip>
+                    <v-chip v-else-if="t3==0" class="red lighten-1 white--text">大夜班</v-chip>
+
+                  </v-chip-group>
+                </v-card-text>
     
               </v-col>
               <v-btn 
@@ -20,6 +37,7 @@
               v-on="on"
               color="secondary"
               class="text-capitalize button-shadow mr-1"
+              :disabled="disabled"
               @click.native="toDetect">
                 開始點班
               </v-btn>
@@ -32,11 +50,18 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     data: () => ({
       uid: null,
       uname: null,
       pNo: null,
+      selection: -1,
+      t1: 0,
+      t2: 0,
+      t3: 0,
+      disabled: true,
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       time: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(11, 11).split(".")[0],
     }),
@@ -44,6 +69,25 @@
       this.uid=this.$route.query.uid;
       this.uname=this.$route.query.uname;
       this.pNo=this.$route.query.pNo;
+    },
+    mounted() {
+      axios.get('/getPsn2', {params:{pNo : this.pNo, begin_Date : this.date, fin_Date : this.date}})
+      .then((resp) => {
+        let data_num = resp.data.length;
+        //alert(resp.data[0].record_Time)
+
+        for(var i = 0; i < data_num; i++){
+          if(resp.data[i].record_Time == "白班")
+            this.t1 = 1;
+          else if(resp.data[i].record_Time == "小夜班")
+            this.t2 = 1;
+          else if(resp.data[i].record_Time == "大夜班")
+            this.t3 = 1;
+        }
+      }).catch((error) => {
+        alert('Database Error ' +error)
+      })
+      
     },
     methods: {
       toDetect() {
@@ -54,9 +98,17 @@
             uid : this.uid,
             uname : this.uname,
             pNo : this.pNo,
+            time : this.selection
           }
         })
-      }
-    }
+      },
+      isAddButtonDisabled() {
+        if(this.selection==-1)
+          this.disabled=true
+        else
+          this.disabled=false
+      },
+    },
+    
   }
 </script>
